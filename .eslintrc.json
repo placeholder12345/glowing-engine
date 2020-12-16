@@ -5,7 +5,10 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "airbnb-typescript"
+    "airbnb-typescript",
+    "airbnb-typescript-prettier",
+    "prettier",
+    "prettier/react"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -20,5 +23,10 @@
     "react",
     "@typescript-eslint"
   ],
-  "rules": {}
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        { "allowTypedFunctionExpressions": true }
+      ]
+  }
 }

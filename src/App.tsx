@@ -1,9 +1,9 @@
 import React from 'react';
 
-function App() {
+function App(): React.ReactElement {
   return (
     <div className="App">
-      Hello world!!
+      <div className="content">Hello World</div>
     </div>
   );
 }
