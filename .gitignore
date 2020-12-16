@@ -25,3 +25,9 @@ yarn-error.log*
 .eslintcache
 
 yarn.lock
+
+# environment variables
+*.env
+
+# python
+__pycache__
