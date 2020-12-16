@@ -31,3 +31,6 @@ yarn.lock
 
 # python
 __pycache__
+
+htmlcov/
+.coverage
