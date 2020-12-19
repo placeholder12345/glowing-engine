@@ -1,6 +1,7 @@
-import { EuiPage } from '@elastic/eui';
 import React from 'react';
+import { EuiPage } from '@elastic/eui';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
 import About from './pages/About';
 import Home from './pages/Home';
 
