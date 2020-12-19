@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import About from './pages/About';
 import Home from './pages/Home';
+import Syllabus from './pages/Syllabus';
 
 function App(): React.ReactElement {
   return (
@@ -17,12 +18,18 @@ function App(): React.ReactElement {
             <li>
               <Link to="/about">About</Link>
             </li>
+            <li>
+              <Link to="/syllabus">Syllabus</Link>
+            </li>
           </ul>
         </nav>
         <EuiPage>
           <Switch>
             <Route path="/about">
               <About />
+            </Route>
+            <Route path="/syllabus">
+              <Syllabus />
             </Route>
             <Route path="/">
               <Home />
