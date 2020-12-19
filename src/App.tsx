@@ -1,16 +1,35 @@
+import { EuiPage } from '@elastic/eui';
 import React from 'react';
-import { EuiButton, EuiFlexItem, EuiPage } from '@elastic/eui';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import About from './pages/About';
+import Home from './pages/Home';
 
 function App(): React.ReactElement {
   return (
-    <EuiPage>
-      <div className="App">
-        <div className="content">Hello World</div>
-        <EuiFlexItem grow={false}>
-          <EuiButton onClick={(): void => {}}>Primary</EuiButton>
-        </EuiFlexItem>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+          </ul>
+        </nav>
+        <EuiPage>
+          <Switch>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </EuiPage>
       </div>
-    </EuiPage>
+    </Router>
   );
 }
 
