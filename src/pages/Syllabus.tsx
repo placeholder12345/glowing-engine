@@ -1,12 +1,28 @@
 import React, { useState } from 'react';
-import { EuiTitle, EuiFilePicker } from '@elastic/eui';
+import { EuiTitle, EuiFilePicker, EuiFlexItem, EuiButton } from '@elastic/eui';
+
+import FileList from '../components/FileList';
 
 function Syllabus(): React.ReactElement {
-  const [files, setFiles] = useState<null | FileList>();
+  const [files, setFiles] = useState<Array<File>>([]);
+  const [uploadFiles, setUploadFiles] = useState<Array<File>>([]);
 
   const onChange = (newFiles: null | FileList): void => {
-    setFiles(newFiles);
+    if (newFiles) {
+      const newF = Array<File>();
+      Array.from(newFiles).forEach((file) => newF.push(file));
+      setFiles((oldF) => [...oldF, ...newF]);
+    }
   };
+
+  function upload(): void {
+    if (files) {
+      const uploads = Array<File>();
+      Array.from(files).forEach((file) => uploads.push(file));
+      setUploadFiles((oldF) => [...oldF, ...uploads]);
+      setFiles([]);
+    }
+  }
 
   return (
     <div>
@@ -23,15 +39,17 @@ function Syllabus(): React.ReactElement {
         display="default"
         aria-label="Use aria labels when no actual label is in use"
       />
-      {files
-        ? Array.from(files).map(
-            (file: File): React.ReactElement => (
-              <li key={file.name}>
-                <strong>{file.name}</strong> ({file.size} bytes)
-              </li>
-            ),
-          )
-        : null}
+      <FileList files={files} setFiles={setFiles} />
+      <EuiFlexItem grow={false}>
+        <EuiButton onClick={(): void => upload()}>Upload</EuiButton>
+      </EuiFlexItem>
+      {uploadFiles.map(
+        (file: File): React.ReactElement => (
+          <li key={file.name}>
+            <strong>{file.name}</strong> ({file.size} bytes)
+          </li>
+        ),
+      )}
     </div>
   );
 }
