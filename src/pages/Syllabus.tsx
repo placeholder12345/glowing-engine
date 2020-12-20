@@ -11,7 +11,7 @@ function Syllabus(): React.ReactElement {
     if (newFiles) {
       const newF = Array<File>();
       Array.from(newFiles).forEach((file) => newF.push(file));
-      setFiles((oldF) => [...(oldF ?? []), ...newF]);
+      setFiles((oldF) => [...oldF, ...newF]);
     }
   };
 
@@ -19,7 +19,7 @@ function Syllabus(): React.ReactElement {
     if (files) {
       const uploads = Array<File>();
       Array.from(files).forEach((file) => uploads.push(file));
-      setUploadFiles((oldF) => [...(oldF ?? []), ...uploads]);
+      setUploadFiles((oldF) => [...oldF, ...uploads]);
       setFiles([]);
     }
   }
