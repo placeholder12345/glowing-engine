@@ -5,6 +5,7 @@ import FileList from '../components/FileList';
 
 function Syllabus(): React.ReactElement {
   const [files, setFiles] = useState<Array<File>>([]);
+  const [uploadFiles, setUploadFiles] = useState<Array<File>>([]);
 
   const onChange = (newFiles: null | FileList): void => {
     if (newFiles) {
@@ -15,11 +16,11 @@ function Syllabus(): React.ReactElement {
   };
 
   function upload(): void {
-    // console.log(files);
     if (files) {
       const uploads = Array<File>();
       Array.from(files).forEach((file) => uploads.push(file));
-      console.log(uploads);
+      setUploadFiles((oldF) => [...(oldF ?? []), ...uploads]);
+      setFiles([]);
     }
   }
 
@@ -42,6 +43,13 @@ function Syllabus(): React.ReactElement {
       <EuiFlexItem grow={false}>
         <EuiButton onClick={(): void => upload()}>Upload</EuiButton>
       </EuiFlexItem>
+      {uploadFiles.map(
+        (file: File): React.ReactElement => (
+          <li key={file.name}>
+            <strong>{file.name}</strong> ({file.size} bytes)
+          </li>
+        ),
+      )}
     </div>
   );
 }
