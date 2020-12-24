@@ -1,8 +1,9 @@
 from os import getenv
 
-from server import create_app
+from server import create_app, migrate
 
 from config import Config
+
 
 config = Config()
 app = create_app(config)
