@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Syllabus from './pages/Syllabus';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
+import GpaCalc from './pages/GpaCalc';
 
 function App(): React.ReactElement {
   const user = useSelector((state: AppState) => state.user);
@@ -29,6 +30,9 @@ function App(): React.ReactElement {
               </li>
               <li>
                 <Link to="/syllabus">Syllabus</Link>
+              </li>
+              <li>
+                <Link to="/gpacalc">GPA Calculator</Link>
               </li>
               <li>
                 <Link to="/logout">Logout</Link>
@@ -55,6 +59,9 @@ function App(): React.ReactElement {
             </Route>
             <Route path="/syllabus">
               <Syllabus />
+            </Route>
+            <Route path="/gpacalc">
+              <GpaCalc />
             </Route>
             <Route path="/login">
               <Login />
