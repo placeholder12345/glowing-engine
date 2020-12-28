@@ -32,9 +32,7 @@ function Login(): React.ReactElement {
         username: 'username',
       },
     });
-    axios.post('/api/login/test', { name: 'hi' }).then((response) => {
-      console.log(response);
-    });
+    axios.post('/api/login/test', { name: 'hi' });
     history.push('/');
   };
 
@@ -45,7 +43,6 @@ function Login(): React.ReactElement {
   const googleLogin = (googleUser: any): void => {
     axios.post('/api/login/token', { token: googleUser.tokenId }).then((response) => {
       if (response.status === 200) {
-        console.log(response.data);
         userDispatch({
           type: LOGIN,
           payload: {

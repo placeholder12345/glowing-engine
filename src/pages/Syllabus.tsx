@@ -23,9 +23,7 @@ function Syllabus(): React.ReactElement {
       Array.from(files).forEach((file) => uploads.push(file));
       setUploadFiles((oldF) => [...oldF, ...uploads]);
       setFiles([]);
-      axios.post('/api/login/test', { file: files }).then((response) => {
-        console.log(response);
-      });
+      axios.post('/api/login/test', { file: files });
     }
   }
 
