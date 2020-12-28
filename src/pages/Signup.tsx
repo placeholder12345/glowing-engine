@@ -1,9 +1,7 @@
 import React, { Dispatch } from 'react';
-import axios from 'axios';
-
-import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
 import {
   EuiTitle,
   EuiPageBody,
@@ -17,14 +15,17 @@ import {
   EuiPageContentHeaderSection,
   EuiFlexItem,
 } from '@elastic/eui';
-
 import { UserActions, LOGIN } from '../actions/userActions';
 
-function Login(): React.ReactElement {
+function Signup(): React.ReactElement {
   const userDispatch = useDispatch<Dispatch<UserActions>>();
   const history = useHistory();
 
   const login = (): void => {
+    history.push('/login');
+  };
+
+  const signup = (): void => {
     userDispatch({
       type: LOGIN,
       payload: {
@@ -32,30 +33,7 @@ function Login(): React.ReactElement {
         username: 'username',
       },
     });
-    axios.post('/api/login/test', { name: 'hi' }).then((response) => {
-      console.log(response);
-    });
     history.push('/');
-  };
-
-  const signup = (): void => {
-    history.push('/signup');
-  };
-
-  const googleLogin = (googleUser: any): void => {
-    axios.post('/api/login/token', { token: googleUser.tokenId }).then((response) => {
-      if (response.status === 200) {
-        console.log(response.data);
-        userDispatch({
-          type: LOGIN,
-          payload: {
-            id: response.data.user_id,
-            username: response.data.name,
-          },
-        });
-        history.push('/');
-      }
-    });
   };
 
   return (
@@ -64,31 +42,29 @@ function Login(): React.ReactElement {
         <EuiPageContentHeader>
           <EuiPageContentHeaderSection>
             <EuiTitle>
-              <h2>Log In</h2>
+              <h2>Sign Up</h2>
             </EuiTitle>
           </EuiPageContentHeaderSection>
         </EuiPageContentHeader>
         <EuiPageContentBody>
           <EuiForm component="form">
-            <EuiFormRow label="Username" helpText="Enter your username.">
-              <EuiFieldText name="username" />
+            <EuiFormRow label="Email" helpText="Enter your password.">
+              <EuiFieldText name="email" />
             </EuiFormRow>
             <EuiFormRow label="Password" helpText="Enter your password.">
               <EuiFieldText name="password" type="password" />
             </EuiFormRow>
-            <EuiFlexItem>
-              <EuiButton onClick={(): void => login()}>Log In</EuiButton>
+            <EuiFormRow label="Re-enter Password" helpText="Re-enter your password.">
+              <EuiFieldText name="confirmpassword" type="password" />
+            </EuiFormRow>
+            <EuiFlexItem grow={false}>
               <EuiButton size="s" onClick={(): void => signup()}>
                 Sign Up
               </EuiButton>
             </EuiFlexItem>
-            <GoogleLogin
-              clientId="410354071967-qj3180vqq8j67l6moek3sov3sblbtd3l.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={googleLogin}
-              cookiePolicy="single_host_origin"
-              isSignedIn
-            />
+            <EuiFlexItem grow={false}>
+              <EuiButton onClick={(): void => login()}>Back to Login Page</EuiButton>
+            </EuiFlexItem>
           </EuiForm>
         </EuiPageContentBody>
       </EuiPageContent>
@@ -96,4 +72,4 @@ function Login(): React.ReactElement {
   );
 }
 
-export default Login;
+export default Signup;
