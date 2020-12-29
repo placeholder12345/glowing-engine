@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import { EuiTitle, EuiFilePicker, EuiFlexItem, EuiButton } from '@elastic/eui';
 
 import FileList from '../components/FileList';
@@ -21,6 +23,7 @@ function Syllabus(): React.ReactElement {
       Array.from(files).forEach((file) => uploads.push(file));
       setUploadFiles((oldF) => [...oldF, ...uploads]);
       setFiles([]);
+      axios.post('/api/login/test', { file: files });
     }
   }
 

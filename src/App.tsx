@@ -12,6 +12,7 @@ import Syllabus from './pages/Syllabus';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import GpaCalc from './pages/GpaCalc';
+import Signup from './pages/Signup';
 
 function App(): React.ReactElement {
   const user = useSelector((state: AppState) => state.user);
@@ -68,6 +69,9 @@ function App(): React.ReactElement {
             </Route>
             <Route path="/logout">
               <Logout />
+            </Route>
+            <Route path="/signup">
+              <Signup />
             </Route>
             <Route path="/">
               <Home />
