@@ -25,7 +25,7 @@ def test():
 @login_bp.route("/token", methods=["POST"])
 def token():
     data = json.loads(request.data)
-    token = data["token"]
+    token = data["user"]["tokenId"]
     info = get_info(token)
     if "error" in info:
         return {"message": "Token is invalid"}, 400

@@ -1,7 +1,7 @@
 import React, { Dispatch } from 'react';
 import axios from 'axios';
 
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
@@ -40,8 +40,8 @@ function Login(): React.ReactElement {
     history.push('/signup');
   };
 
-  const googleLogin = (googleUser: any): void => {
-    axios.post('/api/login/token', { token: googleUser.tokenId }).then((response) => {
+  const googleLogin = (googleUser: GoogleLoginResponse | GoogleLoginResponseOffline): void => {
+    axios.post('/api/login/token', { user: googleUser }).then((response) => {
       if (response.status === 200) {
         userDispatch({
           type: LOGIN,
@@ -82,9 +82,10 @@ function Login(): React.ReactElement {
             <GoogleLogin
               clientId="410354071967-qj3180vqq8j67l6moek3sov3sblbtd3l.apps.googleusercontent.com"
               buttonText="Login"
-              onSuccess={googleLogin}
+              onSuccess={(googleUser: GoogleLoginResponse | GoogleLoginResponseOffline): void => {
+                googleLogin(googleUser);
+              }}
               cookiePolicy="single_host_origin"
-              isSignedIn
             />
           </EuiForm>
         </EuiPageContentBody>
