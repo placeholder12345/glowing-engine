@@ -12,9 +12,9 @@ login_bp = Blueprint("login_bp", __name__, url_prefix="/api/login")
 @login_bp.route("/token", methods=["POST"])
 def token():
     data = json.loads(request.data)
-    token = data["user"]["tokenId"]
+    token_id = data["user"]["tokenId"]
     info = requests.get(
-        f"https://oauth2.googleapis.com/tokeninfo?id_token={token}"
+        f"https://oauth2.googleapis.com/tokeninfo?id_token={token_id}"
     ).json()
     if "error" in info:
         return {"message": "Token is invalid"}, 400
