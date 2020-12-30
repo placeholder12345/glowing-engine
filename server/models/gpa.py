@@ -7,4 +7,4 @@ class GPA(db.Model):
     class_name = db.Column(db.String(255))
     grade = db.Column(db.Numeric(10, 3))
 
-    usere = db.relationship("User", backref="user_gpa")
+    user = db.relationship("User", backref="user_gpa")
