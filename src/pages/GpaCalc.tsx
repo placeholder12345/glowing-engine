@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   EuiTitle,
   EuiPageBody,
@@ -8,16 +8,41 @@ import {
   EuiFlexItem,
   EuiButton,
 } from '@elastic/eui';
+import axios from 'axios';
+
+const AUTO_SAVE_DELAY = 3000;
+
+type GPA = {
+  id: number;
+  class: string;
+  grade: string;
+};
 
 function GpaCalc(): React.ReactElement {
-  const [value, setValue] = useState<Array<number>>([0, 0, 0]);
+  const [gpaList, setGpaList] = useState<Array<GPA>>([]);
+
+  useEffect(() => {
+    axios.get('/api/gpa/list').then((data) => {
+      setGpaList(data.data.results);
+    });
+  }, []);
+
+  const saveGpaList = (): void => {
+    axios.post('/api/gpa/update', {
+      items: gpaList.filter((gpa) => !Number.isNaN(Number.parseFloat(gpa.grade))),
+    });
+  };
+
+  const autoSaveTimer = setTimeout(() => {
+    saveGpaList();
+  }, AUTO_SAVE_DELAY);
 
   const calcGPA = (): number => {
     let count = 0;
     let sum = 0;
-    for (let i = 0; i < value.length; i += 1) {
-      if (!Number.isNaN(value[i])) {
-        sum += value[i];
+    for (let i = 0; i < gpaList.length; i += 1) {
+      if (!Number.isNaN(gpaList[i].grade)) {
+        sum += Number.parseFloat(gpaList[i].grade);
         count += 1;
       }
     }
@@ -29,9 +54,20 @@ function GpaCalc(): React.ReactElement {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.dataset.index) {
+      clearTimeout(autoSaveTimer);
       const index = parseInt(e.target.dataset.index, 10);
-      const newNum = parseFloat(e.target.value);
-      setValue(value.map((num, i) => (i === index ? newNum : num)));
+      const newNum = e.target.value;
+      setGpaList(gpaList.map((gpa) => (gpa.id === index ? { ...gpa, grade: newNum } : gpa)));
+    }
+  };
+
+  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.dataset.index) {
+      clearTimeout(autoSaveTimer);
+      const index = parseInt(e.target.dataset.index, 10);
+      setGpaList(
+        gpaList.map((gpa) => (gpa.id === index ? { ...gpa, class: e.target.value } : gpa)),
+      );
     }
   };
 
@@ -40,42 +76,40 @@ function GpaCalc(): React.ReactElement {
       <EuiTitle size="l">
         <h1>GPA Calculator</h1>
       </EuiTitle>
-      <EuiFlexGroup style={{ maxWidth: 600 }}>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText placeholder="Class" />
-          </EuiFormRow>
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText data-index={0} onChange={onChange} placeholder="Grade" />
-          </EuiFormRow>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      <EuiFlexGroup style={{ maxWidth: 600 }}>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText placeholder="Class" />
-          </EuiFormRow>
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText data-index={1} onChange={onChange} placeholder="Grade" />
-          </EuiFormRow>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      <EuiFlexGroup style={{ maxWidth: 600 }}>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText placeholder="Class" />
-          </EuiFormRow>
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiFormRow>
-            <EuiFieldText data-index={2} onChange={onChange} placeholder="Grade" />
-          </EuiFormRow>
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      {gpaList.map((gpa) => (
+        <EuiFlexGroup style={{ maxWidth: 600 }} key={gpa.id}>
+          <EuiFlexItem>
+            <EuiFormRow>
+              <EuiFieldText
+                data-index={gpa.id}
+                onChange={onNameChange}
+                placeholder="Class"
+                value={gpa.class}
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFormRow>
+              <EuiFieldText
+                data-index={gpa.id}
+                onChange={onChange}
+                value={gpa.grade}
+                placeholder="Grade"
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      ))}
+      <EuiButton
+        onClick={(): void => {
+          setGpaList((prev) => [
+            ...prev,
+            { id: Math.floor(Math.random() * 100000), class: '', grade: '' },
+          ]);
+        }}
+      >
+        Add class
+      </EuiButton>
       <EuiButton onClick={(): void => {}}>Calculate</EuiButton>
       GPA = {calcGPA()}
     </EuiPageBody>

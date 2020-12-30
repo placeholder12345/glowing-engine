@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, send_from_directory
 
 from server.routes.login import login_bp
+from server.routes.gpa import gpa_bp
 
 
 main_bp = Blueprint(
