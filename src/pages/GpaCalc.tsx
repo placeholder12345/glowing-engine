@@ -34,7 +34,6 @@ function GpaCalc(): React.ReactElement {
   };
 
   const autoSaveTimer = setTimeout(() => {
-    console.log();
     saveGpaList();
   }, AUTO_SAVE_DELAY);
 
