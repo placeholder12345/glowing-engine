@@ -1,6 +1,6 @@
 import json
 import requests
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 
 from server import db
 from server.models import User
@@ -11,6 +11,8 @@ login_bp = Blueprint("login_bp", __name__, url_prefix="/api/login")
 
 @login_bp.route("/token", methods=["POST"])
 def token():
+    session.permanent = True
+
     data = json.loads(request.data)
     token_id = data["user"]["tokenId"]
     info = requests.get(
@@ -26,11 +28,16 @@ def token():
         user = User(name=name, oauth_id=oauth_id, email=email)
         db.session.add(user)
         db.session.commit()
+
+        session["user_id"] = user.id
+
         return {
             "message": "Successfully created",
             "user_id": user.id,
             "name": user.name,
         }
+
+    session["user_id"] = query_user.id
 
     return {
         "message": "Account already exists",
