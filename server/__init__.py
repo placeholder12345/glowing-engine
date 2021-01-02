@@ -27,5 +27,6 @@ def create_app(config):
         app.register_blueprint(routes.main_bp)
         app.register_blueprint(routes.login_bp)
         app.register_blueprint(routes.gpa_bp)
+        app.register_blueprint(routes.grades_bp)
 
     return app

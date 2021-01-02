@@ -14,8 +14,11 @@ def list_gpa():
 
     gpa_list = []
     for gpa in gpas:
-        gpa_obj = {"id": gpa.id, "class": gpa.class_name,
-                   "grade": float(gpa.grade)}
+        gpa_obj = {
+            "id": gpa.id,
+            "class": gpa.class_name,
+            "grade": float(gpa.grade)
+        }
         gpa_list.append(gpa_obj)
 
     return {"results": gpa_list}
@@ -38,8 +41,11 @@ def update_gpa():
 
     for i in range(len(gpas), len(new_gpas)):
         new_gpa = new_gpas[i]
-        gpa = GPA(user_id=user.id,
-                  class_name=new_gpa["class"], grade=new_gpa["grade"])
+        gpa = GPA(
+            user_id=user.id,
+            class_name=new_gpa["class"],
+            grade=new_gpa["grade"]
+        )
         db.session.add(gpa)
 
     db.session.commit()
